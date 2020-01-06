@@ -27,10 +27,6 @@ class User implements UserInterface
      */
     private $email;
 
-    /**
-     * @ORM\Column(type="json")
-     */
-    private $roles = [];
 
     /**
      * @var string
@@ -116,7 +112,7 @@ class User implements UserInterface
      */
     public function getRoles(): array
     {
-        $roles = $this->roles;
+       $roles = [];
         // guarantee every user at least has ROLE_USER
         $roles[] = 'ROLE_USER';
 
@@ -125,8 +121,6 @@ class User implements UserInterface
 
     public function setRoles(array $roles): self
     {
-        $this->roles = $roles;
-
         return $this;
     }
 
