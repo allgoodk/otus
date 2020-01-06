@@ -1,10 +1,11 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-<h1>Дарова {{ first_name }} {{ last_name }}</h1>
-<p> Как дела в городе {{ city }}?</p>
-Ты видел что ты написал в интересах?
-<p> {{ interests }}</p>
+    <h1>Дарова {{ first_name }} {{ last_name }}</h1>
+    <p> Ты очень старый , тебе же {{ date('now').diff((date(birthday))).format('%y') }} годиков</p>
+    <p> Тебе нормально живется в г. {{ city }}? Ведь там не любят, если ты  {{ sex }}</p>
+    Ты уверен, что с такими интересами стоит искать друзей?
+    <p> {{ interests }}</p>
 
-<a href="/logout">Выйти</a>
+    <a href="/logout">Выйти</a>
 {% endblock %}

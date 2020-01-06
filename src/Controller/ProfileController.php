@@ -30,6 +30,7 @@ class ProfileController extends AbstractController
     public function profileAction(string $username)
     {
         $userData = $this->userRepository->getUserByUserName($username);
+
         return $this->render('profile/index.html.twig', current($userData));
     }
 }

@@ -80,6 +80,12 @@ class User implements UserInterface
      */
     private $interests;
 
+    /**
+     * @var string
+     * @ORM\Column(type="string")
+     */
+    private $sex;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -210,5 +216,21 @@ class User implements UserInterface
         $this->interests = $interests;
 
         return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSex(): ?string
+    {
+        return $this->sex;
+    }
+
+    /**
+     * @param string $sex
+     */
+    public function setSex(string $sex): void
+    {
+        $this->sex = $sex;
     }
 }

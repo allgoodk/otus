@@ -7,6 +7,7 @@ use DateTime;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
@@ -31,6 +32,11 @@ class RegistrationFormType extends AbstractType
             ])
             ->add('city', null ,['required' => false, 'empty_data' => ''])
             ->add('interests', null ,['required' => false, 'empty_data' => ''])
+            ->add('sex', ChoiceType::class ,['choices' => [
+                 'мужчинко' => 'male',
+                 'женщинко' => 'female',
+                 'Боевой вертолёт АПАЧ-8' => 'helicopter',
+            ]])
             ->add('plainPassword', PasswordType::class, [
                 // instead of being set onto the object directly,
                 // this is read and encoded in the controller

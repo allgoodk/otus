@@ -77,7 +77,8 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
                                     last_name,
                                     birthday,
                                     password,
-                                    interests  
+                                    interests,
+                                    sex  
                                       ) VALUES (
                                     :city,
                                     :email,
@@ -85,7 +86,8 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
                                     :last_name,
                                     :birthday,
                                     :password,
-                                    :interests
+                                    :interests,
+                                    :sex
                 ) ';
 
         $stmt = $connection->prepare($sql);
@@ -96,7 +98,8 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
             'last_name' => $user->getLastName(),
             'birthday' => $user->getBirthday()->format('Y-m-d H:i:s'),
             'password' => $user->getPassword(),
-            'interests' =>$user->getInterests()
+            'interests' => $user->getInterests(),
+            'sex' => $user->getSex()
         ]);
     }
 
@@ -111,7 +114,7 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
     {
         $conn = $this->_em->getConnection();
 
-        $sql = 'SELECT first_name, last_name, birthday, city, interests FROM user WHERE email = :username';
+        $sql = 'SELECT first_name, last_name, birthday, city, interests, sex FROM user WHERE email = :username';
 
         $stmt = $conn->prepare($sql);
 
