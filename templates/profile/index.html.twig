@@ -1,0 +1,10 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<h1>Дарова {{ first_name }} {{ last_name }}</h1>
+<p> Как дела в городе {{ city }}?</p>
+Ты видел что ты написал в интересах?
+<p> {{ interests }}</p>
+
+<a href="/logout">Выйти</a>
+{% endblock %}

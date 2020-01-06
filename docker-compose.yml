@@ -1,0 +1,55 @@
+version: '3'
+
+volumes:
+    msql_volume: ~
+
+services:
+  php:
+    build:
+      context: ./docker/php
+      args:
+        useruid: ${UID}
+        username: app
+      dockerfile: Dockerfile
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10000k"
+    environment:
+      DEBUG: ${DEBUG}
+    working_dir: "/var/www/app/"
+    user: app
+    hostname: "tester"
+    volumes:
+      - "./:/var/www/app/"
+      - "./docker/php/php.ini:/usr/local/etc/php/php.ini:ro"
+      - "./docker/php/fpm_pool.conf:/usr/local/etc/php-fpm.d/zz-docker.conf:ro"
+
+  nginx:
+    build:
+      context: ./docker/nginx
+      dockerfile: Dockerfile
+      args:
+        username: app
+        useruid: ${UID}
+    ports:
+      - "80:80"
+      - "8082:8082"
+    volumes:
+      - ".:/var/www/app"
+      - "./docker/nginx/nginx.conf:/etc/nginx/nginx.conf:ro"
+    links:
+      - php
+
+  db:
+      image: mysql:5.7
+      volumes:
+        - msql_volume:/var/lib/mysql
+      ports:
+        - "3306:3306"
+      restart: always
+      environment:
+          MYSQL_DATABASE: 'db'
+          MYSQL_USER: 'user'
+          MYSQL_PASSWORD: 'password'
+          MYSQL_ROOT_PASSWORD: 'password'
