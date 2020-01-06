@@ -73,7 +73,6 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         $sql = 'INSERT INTO user (
                                     city, 
                                     email, 
-                                    roles, 
                                     first_name, 
                                     last_name,
                                     birthday,
@@ -82,7 +81,6 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
                                       ) VALUES (
                                     :city,
                                     :email,
-                                    :roles,
                                     :first_name,
                                     :last_name,
                                     :birthday,
@@ -94,12 +92,11 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         $stmt->execute([
             'city' => $user->getCity(),
             'email' => $user->getEmail(),
-            'roles' => json_encode($user->getRoles()),
             'first_name' => $user->getFirstName(),
             'last_name' => $user->getLastName(),
             'birthday' => $user->getBirthday()->format('Y-m-d H:i:s'),
             'password' => $user->getPassword(),
-            'interests' => json_encode($user->getInterests())
+            'interests' =>$user->getInterests()
         ]);
     }
 
