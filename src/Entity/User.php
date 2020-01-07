@@ -233,4 +233,15 @@ class User implements UserInterface
     {
         $this->sex = $sex;
     }
+
+    /**
+     * @param int $id
+     * @return User
+     */
+    public function setId(int $id): User
+    {
+        $this->id = $id;
+
+        return $this;
+    }
 }

@@ -6,7 +6,9 @@ use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\DBAL\DBALException;
+use Doctrine\DBAL\Exception\DatabaseObjectNotFoundException;
 use PDO;
+use RuntimeException;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -104,22 +106,31 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
     }
 
     /**
-     * Get array  of render data for user
+     * Get array  of render data for user, throw exception if user doesn't exist
      *
      * @param string $username
-     * @return mixed[]
+     *
+     * @return array
+     *
      * @throws DBALException
      */
-    public function getUserByUserName(string $username): array
+    public function getUserByUsername(string $username): array
     {
         $conn = $this->_em->getConnection();
 
-        $sql = 'SELECT first_name, last_name, birthday, city, interests, sex FROM user WHERE email = :username';
+        $sql = 'SELECT id,first_name, last_name, birthday, city, interests, sex, password FROM user 
+                WHERE email = :username';
 
         $stmt = $conn->prepare($sql);
 
         $stmt->execute(['username' => $username]);
 
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $userList = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        if (count($userList) === 0) {
+            throw new RuntimeException('User wth username ' . $username . ' doesnt exist');
+        }
+
+        return current($userList);
     }
 }

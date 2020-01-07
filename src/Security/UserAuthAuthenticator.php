@@ -65,14 +65,14 @@ class UserAuthAuthenticator extends AbstractFormLoginAuthenticator implements Pa
             throw new InvalidCsrfTokenException();
         }
 
-        $user = $this->entityManager->getRepository(User::class)->findOneBy(['email' => $credentials['email']]);
+        $userData = $this->entityManager->getRepository(User::class)->getUserByUsername($credentials['email']);
 
-        if (!$user) {
+        if (empty($userData)) {
             // fail authentication with a custom error
             throw new CustomUserMessageAuthenticationException('Email could not be found.');
         }
 
-        return $user;
+        return (new User())->setId((int)$userData['id'])->setPassword($userData['password'])->setEmail($credentials['email']);
     }
 
     public function checkCredentials($credentials, UserInterface $user)

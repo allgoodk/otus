@@ -22,38 +22,34 @@ class RegistrationFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('email', EmailType::class)
-            ->add('firstName')
-            ->add('lastName')
-            ->add('lastName')
+            ->add('email', EmailType::class, ['label' => 'Емаил, используется для входа'])
+            ->add('firstName', null, ['label' => 'Имя'])
+            ->add('lastName', null, ['label' => 'Фамилия'])
             ->add('birthday', BirthdayType::class, [
                 'required' => false,
                 'empty_data' => '',
+                'label' => 'Дата рождения'
             ])
-            ->add('city', null ,['required' => false, 'empty_data' => ''])
-            ->add('interests', null ,['required' => false, 'empty_data' => ''])
-            ->add('sex', ChoiceType::class ,['choices' => [
-                 'мужчинко' => 'male',
-                 'женщинко' => 'female',
-                 'Боевой вертолёт АПАЧ-8' => 'helicopter',
-            ]])
+            ->add('city', null, ['label' => 'Город'])
+            ->add('interests', null, ['label' => 'Интересы'])
+            ->add('sex', ChoiceType::class, [
+                'choices' => [
+                    'мужчинко' => 'мужчинко',
+                    'женщинко' => 'женщинко',
+                    'Боевой вертолёт АПАЧ-8' => 'Боевой вертолёт АПАЧ-8',
+                    'Сказочное существо' => 'Сказочное существо',
+                ],
+                'label' => 'Гендерная принадлежность или как там это называется'
+            ])
             ->add('plainPassword', PasswordType::class, [
-                // instead of being set onto the object directly,
-                // this is read and encoded in the controller
+                'label' => 'Пароль',
                 'mapped' => false,
                 'constraints' => [
                     new NotBlank([
                         'message' => 'Please enter a password',
                     ]),
-                    new Length([
-                        'min' => 6,
-                        'minMessage' => 'Your password should be at least {{ limit }} characters',
-                        // max length allowed by Symfony for security reasons
-                        'max' => 4096,
-                    ]),
                 ],
-            ])
-        ;
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)

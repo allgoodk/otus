@@ -5,7 +5,12 @@ namespace App\Controller;
 
 
 use App\Repository\UserRepository;
+use Doctrine\DBAL\DBALException;
+use Doctrine\DBAL\Exception\DatabaseObjectNotFoundException;
+use Exception;
+use RuntimeException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class ProfileController extends AbstractController
@@ -25,12 +30,19 @@ class ProfileController extends AbstractController
     }
 
     /**
-     * @Route(path="/profile/{username}" , name="app_profile")
+     * @Route(path="/profile/{username}", name="app_profile")
+     * @param string $username
+     *
+     * @return Response
      */
-    public function profileAction(string $username)
+    public function profileAction(string $username): Response
     {
-        $userData = $this->userRepository->getUserByUserName($username);
+        try {
+            $userData = $this->userRepository->getUserByUsername($username);
+        } catch (Exception $e) {
+            throw $this->createNotFoundException($e->getMessage());
+        }
 
-        return $this->render('profile/index.html.twig', current($userData));
+        return $this->render('profile/index.html.twig', $userData);
     }
 }
