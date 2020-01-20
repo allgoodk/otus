@@ -228,10 +228,14 @@ class User implements UserInterface
 
     /**
      * @param string $sex
+     *
+     * @return User
      */
-    public function setSex(string $sex): void
+    public function setSex(string $sex): User
     {
         $this->sex = $sex;
+
+        return $this;
     }
 
     /**
